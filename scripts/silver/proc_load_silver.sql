@@ -11,7 +11,7 @@ Begin
 		PRINT 'Loading CRM Tables';
 		PRINT '------------------------------------------------';
 		set @start_time = getdate()
-		print 'Truncating crm_cust_info'
+		print 'Truncating crm_cust_info';
 		truncate table silver.crm_cust_info
 		print 'Inserting crm_cust_info'
 		Insert into silver.crm_cust_info
@@ -45,6 +45,8 @@ Begin
 		select * ,
 		ROW_NUMBER() over(partition by cst_id order by cst_create_date desc) as rnk
 		from bronze.crm_cust_info
+		WHERE cst_id IS NOT NULL
+
 		) t
 		where rnk =1
 		SET @end_time = GETDATE();
@@ -53,7 +55,7 @@ Begin
 	    -- Loading silver.crm_prd_info
         SET @start_time = GETDATE();
 		print 'Truncating crm_prd_info'
-		truncate table silver.crm_cust_info
+		truncate table silver.crm_prd_info
 		print 'Inserting crm_prd_info'
 		Insert into silver.crm_prd_info
 		(
@@ -94,7 +96,7 @@ Begin
         -- Loading crm_sales_details
         SET @start_time = GETDATE();
 		print 'Truncating crm_sales_details'
-		truncate table silver.crm_cust_info
+		truncate table silver.crm_sales_details
 		print 'Inserting crm_sales_details'
 		Insert into silver.crm_sales_details
 		(
@@ -142,7 +144,7 @@ Begin
         -- Loading erp_cust_az12
         SET @start_time = GETDATE();
 		print 'Truncating erp_cust_az12'
-		truncate table silver.crm_cust_info
+		truncate table silver.erp_cust_az12
 		print 'Inserting erp_cust_az12'
 		insert into silver.erp_cust_az12(
 		CID,
@@ -176,7 +178,7 @@ Begin
         -- Loading erp_loc_a101
         SET @start_time = GETDATE();
 		print 'Truncating erp_loc_a101'
-		truncate  table silver.crm_cust_info
+		truncate  table silver.erp_loc_a101
 		print 'Inserting erp_cust_az12'
 		insert into silver.erp_loc_a101(
 		cid,
@@ -197,7 +199,7 @@ Begin
 		-- Loading erp_px_cat_g1v2
 		SET @start_time = GETDATE();
 		print 'Truncating erp_px_cat_g1v2'
-		truncate  table silver.crm_cust_info
+		truncate  table silver.erp_px_cat_g1v2
 		print 'Inserting erp_px_cat_g1v2'
 		insert into silver.erp_px_cat_g1v2
 		(
